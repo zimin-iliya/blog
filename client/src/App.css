@@ -66,3 +66,32 @@ div.post div.postimage {
   justify-content: space-between;
   margin-top: 20px;
 }
+
+form.login {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+form.register {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #D93B81;
+  color: #fff;
+  cursor: pointer;
+}
+
+form h1 {
+  font-size: 1.5em;
+  text-align: center;
+  font-weight: bold;
+}
