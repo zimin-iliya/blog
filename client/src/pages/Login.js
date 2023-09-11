@@ -1,16 +1,41 @@
-// import {useContext, useState} from "react";
-// import {Navigate} from "react-router-dom";
+import { useState } from "react";
 
+export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+   async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+        await fetch("http://localhost:4000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+        });
+    } catch (error) {
+        console.error(error);
+    }
+}
 
-export default  function Login() {
-    return (
-        <>
-        <form className="login" action="" >
-            <h1>Login</h1>
-            <input type="text" name="username" placeholder="Username" />
-            <input type="password" name="password" placeholder="Password" />
-            <button type="submit">Login</button>
-        </form>
-        </>
-    )
+  return (
+    <>
+      <form className="login" onSubmit={handleSubmit}>
+        <h1>Login</h1>
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Login</button>
+      </form>
+    </>
+  );
 }
