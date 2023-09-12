@@ -1,18 +1,24 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/User");
-// const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
+const password = process.env.PASSWORD;
 
 const salt = bcrypt.genSaltSync(10);
+const secret = "secret";
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());
+app.use(cookieParser());
 
 mongoose.connect(
-  "mongodb+srv://blog:6R3RwvLLrxVO5gXP@blog.fz13thm.mongodb.net/?retryWrites=true&w=majority"
+  `mongodb+srv://blog:${password}@blog.fz13thm.mongodb.net/?retryWrites=true&w=majority`
 );
 
 app.post("/register", async (req, res) => {
@@ -33,14 +39,37 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const userDoc = await User.findOne({ username });
+  if (!userDoc) {
+    res.status(401).json({ message: "Wrong username or password" });
+    return;
+  }
   const passOk = bcrypt.compareSync(password, userDoc.password);
   if (passOk) {
-    res.json({ message: "You are logged in" });
+    jwt.sign({ username, userId: userDoc._id }, secret, (err, token) => {
+      if (err) {
+        res.status(500).json({ message: "Error signing token" });
+      } else {
+        res.cookie("token", token).json("token");
+      }
+    });
   } else {
     res.status(401).json({ message: "You are not logged in" });
   }
 });
 
-app.listen(4000, () => console.log("Server running on port 4000"));
+app.get("/profile", (req, res) => {
+  const token = req.cookies.token;
+  jwt.verify(token, secret, (err, info) => {
+    if (err) {
+      res.status(401).json({ message: "You are not logged in" });
+    } else {
+      res.json(info);
+    }
+  });
+});
 
-// mongodb+srv://zimin:VLEvS8wtNNERiGPM@blog.sar4uyz.mongodb.net/?retryWrites=true&w=majority
+app.get("/logout", (req, res) => {
+  res.clearCookie("token").json({ message: "You are logged out" });
+});
+
+app.listen(4000, () => console.log("Server running on port 4000"));

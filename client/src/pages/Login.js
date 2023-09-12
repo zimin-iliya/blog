@@ -1,20 +1,33 @@
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-   async function handleSubmit(e) {
+  const [redirect, setRedirect] = useState(false);
+
+  async function handleSubmit(e) {
     e.preventDefault();
     try {
-        await fetch("http://localhost:4000/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password }),
-        });
+      const response = await fetch("http://localhost:4000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+        credentials: "include",
+      });
+      if (response.ok) {
+        setRedirect(true);
+      } else {
+        console.log("error");
+      }
     } catch (error) {
-        console.error(error);
+      console.error(error);
     }
-}
+  }
+
+  if (redirect) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <>
