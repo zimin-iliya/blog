@@ -49,7 +49,7 @@ app.post("/login", async (req, res) => {
       if (err) {
         res.status(500).json({ message: "Error signing token" });
       } else {
-        res.cookie("token", token).json("token");
+        res.cookie("token", token).json({id: userDoc._id, username});
       }
     });
   } else {

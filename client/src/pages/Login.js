@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../comp/UserContext";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const { setUserInfo } = useContext(UserContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -16,7 +19,10 @@ export default function Login() {
         credentials: "include",
       });
       if (response.ok) {
-        setRedirect(true);
+        response.json().then((data) => {
+          setUserInfo(data.username);
+          setRedirect(true);
+        });
       } else {
         console.log("error");
       }

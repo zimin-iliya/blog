@@ -1,35 +1,43 @@
 import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import {useContext, useEffect} from "react";
+import { UserContext } from "./UserContext";
 
 export default function Header() {
-  const [username, setUsername] = useState("");
+  const { setUserInfo, userInfo } = useContext(UserContext);
 
   async function Logout() {
     try {
       await fetch("http://localhost:4000/logout", {
         credentials: "include",
       });
-      setUsername("");
+      setUserInfo(null);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+      fetchProfile();
+  }, []);
+
+  async function fetchProfile() {
+    try {
+      const response = await fetch("http://localhost:4000/profile", {
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setUserInfo(data.username);
+      } else {
+        console.log("error");
+      }
     } catch (error) {
       console.error(error);
     }
   }
 
 
-  useEffect(() => {
-    fetch("http://localhost:4000/profile", {
-      credentials: "include",
-    }).then((response) => {
-      if (response.ok) {
-        response.json().then((data) => {
-          console.log(data);
-          setUsername(data.username);
-        });
-      } else {
-        console.log("error");
-      }
-    });
-  }, []);
   return (
     <>
       <header>
@@ -37,11 +45,13 @@ export default function Header() {
           Home
         </Link>
         <nav>
-          {username ? (
+          {userInfo ? (
             <>
-            <Link to="/create">Add a joke</Link>
-            <Link to="/profile">{username}</Link>
-            <a href="#" onClick={Logout}>Logout </a>
+              <Link to="/create">Add a joke</Link>
+              <Link to="/profile">{userInfo}</Link>
+              <a href="#" onClick={Logout}>
+                Logout{" "}
+              </a>
             </>
           ) : (
             <>
