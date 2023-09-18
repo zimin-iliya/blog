@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./comp/Layout";
 import Content from "./comp/Content";
 import Login from "./pages/Login";
+import Create from "./pages/Create";
 import Register from "./pages/Register";
 import { UserContextProvider } from "./comp/UserContext";
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route index element={<Content />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/create" element={<Create />} />
       </Route>
     </Routes>
     </UserContextProvider>

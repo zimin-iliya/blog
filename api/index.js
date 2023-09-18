@@ -6,6 +6,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/User");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const upload = multer({dest: 'uploads/'});
 require("dotenv").config();
 
 const password = process.env.PASSWORD;
@@ -49,11 +51,22 @@ app.post("/login", async (req, res) => {
       if (err) {
         res.status(500).json({ message: "Error signing token" });
       } else {
-        res.cookie("token", token).json({id: userDoc._id, username});
+        res.cookie("token", token).json({ id: userDoc._id, username });
       }
     });
   } else {
     res.status(401).json({ message: "You are not logged in" });
+  }
+});
+
+app.post("/create", upload.single('image'), async (req, res) => {
+  const { image, title, content } = req.body;
+  try {
+    console.log(req.body);
+    res.json(image, title, content);
+  } catch (err) {
+    console.log("error", err);
+    res.status(400).json({ message: err });
   }
 });
 
