@@ -29,6 +29,8 @@ export default function Header() {
         const data = await response.json();
         console.log(data);
         setUserInfo(data.username);
+        console.log(userInfo);
+
       } else {
         console.log("error");
       }
@@ -45,6 +47,7 @@ export default function Header() {
           Home
         </Link>
         <nav>
+
           {userInfo ? (
             <>
               <Link to="/create">Add a joke</Link>
