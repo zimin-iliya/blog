@@ -1,4 +1,4 @@
-import picture from '../IMG/header.png';
+import picture from '../IMG/dark.jpg';
 
 export default function HeaderLogo() {
     return (

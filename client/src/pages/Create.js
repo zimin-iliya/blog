@@ -10,35 +10,34 @@ export default function Create() {
   const [image, setImage] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
-  console.log(image, title, content);
+  console.log(image, title, "content", content);
 
   async function handleSubmit(e) {
-    e.preventDefault();
-
     const data = new FormData();
-    data.set("image", image[0]);
     data.set("title", title);
     data.set("content", content);
-    data.set("username", userInfo); // this is the user that is logged in")
-    console.log(data);
+    data.set("username", userInfo);
     try {
+      console.log("data", data);
+      e.preventDefault();
       const response = await fetch("http://localhost:4000/create", {
         method: "POST",
         body: data,
       });
       if (response.ok) {
-        
-          console.log(data);
-          console.log(response);
-      
-        
+        setRedirect(true);
       } else {
         console.log("error");
       }
     } catch (error) {
       console.error(error);
     }
+  }
+
+  if (redirect) {
+    return <Navigate to="/" />;
   }
 
   return (

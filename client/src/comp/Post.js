@@ -1,20 +1,54 @@
 import picture2 from "../IMG/pope.jpg";
-export default function Post() {
+import { formatISO9075 } from "date-fns";
+import { useState } from "react";
+export default function Post(joke) {
+  const [gradient, setGradient] = useState(getRandomGradient());
+
+  function getRandomGradient() {
+    const colors = [];
+    for (let i = 0; i < 2; i++) {
+      colors.push(getRandomColor());
+    }
+    return `linear-gradient(45deg, ${colors[0]}, ${colors[1]})`;
+  }
+
+  function getRandomColor() {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  const changeGradient = () => {
+    setGradient(getRandomGradient());
+  };
   return (
     <div className="post">
       <div className="postimage">
-        <img src={picture2} alt="pope" />
+        <div
+          className="random-color-background"
+          style={{ background: gradient, opacity: 0.8 }}
+          onClick={changeGradient}
+        >
+          {/* <img src={picture2} alt="pope" /> */}
+        </div>
       </div>
       <div className="postheader">
-        <p className="postextra">
-          How many Microsoft engineers does it take to change a light bulb?
-          None. They just change the standard to darkness.
-        </p>
+        <div
+          className="content"
+          dangerouslySetInnerHTML={{ __html: joke.joke.content }}
+        />
       </div>
       <div className="postbody">
         <div className="postauthor">
-          <p>by Luda Greko</p>
-          <time>May 5, 2021</time>
+          <p>by {joke.joke.username}</p>
+          <time>
+            {formatISO9075(new Date(joke.joke.createdAt), {
+              representation: "date",
+            })}
+          </time>
         </div>
       </div>
     </div>

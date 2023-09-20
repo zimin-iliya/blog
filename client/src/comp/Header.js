@@ -1,24 +1,28 @@
 import { Link } from "react-router-dom";
-import {useContext, useEffect} from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "./UserContext";
 import { Navigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
+  const [redirect, setRedirect] = useState(false);
 
   async function Logout() {
     try {
       await fetch("http://localhost:4000/logout", {
         credentials: "include",
       });
-      setUserInfo(null);
+      setUserInfo(false);
+      console.log(userInfo);
+      setRedirect(true);
     } catch (error) {
       console.error(error);
     }
   }
 
   useEffect(() => {
-      fetchProfile();
+    fetchProfile();
   }, []);
 
   async function fetchProfile() {
@@ -28,10 +32,7 @@ export default function Header() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setUserInfo(data.username);
-        console.log(userInfo);
-
       } else {
         console.log("error");
       }
@@ -39,7 +40,9 @@ export default function Header() {
       console.error(error);
     }
   }
-
+  if (redirect) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <>
@@ -48,7 +51,6 @@ export default function Header() {
           Home
         </Link>
         <nav>
-
           {userInfo ? (
             <>
               <Link to="/create">Add a joke</Link>

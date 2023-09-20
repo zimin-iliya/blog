@@ -5,9 +5,10 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/User");
+const Jokes = require("./models/Jokes");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
-const upload = multer({dest: 'uploads/'});
+const upload = multer({ dest: "uploads/" });
 require("dotenv").config();
 
 const password = process.env.PASSWORD;
@@ -37,6 +38,15 @@ app.post("/register", async (req, res) => {
     res.status(400).json({ message: err });
   }
 });
+app.get("/jokes", async (req, res) => {
+  try {
+    const jokeDoc = await Jokes.find();
+    res.json(jokeDoc);
+  } catch (err) {
+    console.log("error", err);
+    res.status(400).json({ message: err });
+  }
+});
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -59,11 +69,16 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/create", upload.single('image'), async (req, res) => {
-  const { image, title, content } = req.body;
+app.post("/create", async (req, res) => {
+  const { title, content, username } = req.body;
   try {
+    const jokeDoc = await Jokes.create({
+      title,
+      content,
+      username,
+    });
     console.log(req.body);
-    res.json(image, title, content);
+    res.json(jokeDoc);
   } catch (err) {
     console.log("error", err);
     res.status(400).json({ message: err });
