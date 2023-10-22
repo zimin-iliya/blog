@@ -62,12 +62,16 @@ export default function Create() {
           modules={{
             toolbar: [
               [{ header: [1, 2, false] }],
-              ["italic", "underline", "strike"].false,
-              ["bold", , "blockquote"],
-              [{ list: "" }, { list: "" }, { indent: "" }, { indent: "" }]
-                .false,
-              ["link", "image"].false,
-              ["clean"].false,
+              ["bold", "italic", "underline", "strike", "blockquote"],
+              [
+                { list: "ordered" },
+                { list: "bullet" },
+                { indent: "-1" },
+                { indent: "+1" },
+              ],
+              ["link"],[ "image"].false,
+              ["clean"],
+              
             ],
           }}
         />

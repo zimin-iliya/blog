@@ -47,7 +47,7 @@ header nav {
   align-items: center;
   justify-content: center;
   height: 100%;
-  margin-top: -250px;
+  margin-top: -300px;
 }
 .postextra {
   display: flex;
@@ -113,6 +113,7 @@ form h1 {
 }
 .content {
   display: flex;
+  flex-direction: column;
   height: 80%;
   width: 80%;
   color: #000000;
@@ -121,7 +122,9 @@ form h1 {
 .random-color-background {
   width: 100%;
   height: 500px;
-  background-color: #D93B81;
-  color: #fff;
   z-index: 1;
+}
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
 }

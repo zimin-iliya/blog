@@ -1,4 +1,3 @@
-import picture2 from "../IMG/pope.jpg";
 import { formatISO9075 } from "date-fns";
 import { useState } from "react";
 export default function Post(joke) {
@@ -32,7 +31,6 @@ export default function Post(joke) {
           style={{ background: gradient, opacity: 0.8 }}
           onClick={changeGradient}
         >
-          {/* <img src={picture2} alt="pope" /> */}
         </div>
       </div>
       <div className="postheader">
