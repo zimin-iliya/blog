@@ -23,7 +23,7 @@ export default function Header() {
 
   useEffect(() => {
     fetchProfile();
-  }, []);
+  }, );
 
   async function fetchProfile() {
     try {
@@ -55,9 +55,10 @@ export default function Header() {
             <>
               <Link to="/create">Add a joke</Link>
               <Link to="/profile">{userInfo}</Link>
-              <a href="#" onClick={Logout}>
+              <Link to="/login" onClick={Logout}>Logout</Link>
+              {/* <a href="#" onClick={Logout}>
                 Logout{" "}
-              </a>
+              </a> */}
             </>
           ) : (
             <>
