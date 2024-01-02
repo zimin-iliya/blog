@@ -10,11 +10,16 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 require("dotenv").config();
+const bodyParser = require("body-parser");
 
 const password = process.env.PASSWORD;
 
 const salt = bcrypt.genSaltSync(10);
 const secret = "secret";
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());
@@ -69,8 +74,12 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/create", async (req, res) => {
+app.post("/create",upload.none(), async (req, res) => {
   const { title, content, username } = req.body;
+  console.log("this is req.body",JSON.stringify(req.body));
+  // console.log("this is req.body"+req.body.title);
+  // console.log("this is req.body"+req.body.content);
+
   try {
     const jokeDoc = await Jokes.create({
       title,
@@ -78,6 +87,7 @@ app.post("/create", async (req, res) => {
       username,
     });
     console.log(req.body);
+    console.log(jokeDoc);
     res.json(jokeDoc);
   } catch (err) {
     console.log("error", err);
@@ -112,4 +122,3 @@ app.delete("/jokes/:id", async (req, res) => {
 });
 
 app.listen(4000, () => console.log("Server running on port 4000"));
-

@@ -1,5 +1,3 @@
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useContext } from "react";
@@ -7,18 +5,21 @@ import { UserContext } from "../comp/UserContext";
 
 export default function Create() {
   const { userInfo } = useContext(UserContext);
-  const [image, setImage] = useState("");
+  // const [image, setImage] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [redirect, setRedirect] = useState(false);
 
-  console.log(image, title, "content", content);
+  console.log( title, "content", content, userInfo);
+  
 
   async function handleSubmit(e) {
     const data = new FormData();
-    data.set("title", title);
-    data.set("content", content);
-    data.set("username", userInfo);
+    
+    // data.append("image", image);
+    data.append("title", title);
+    data.append("content", content);
+    data.append("username", userInfo);
     try {
       console.log("data", data);
       e.preventDefault();
@@ -42,39 +43,21 @@ export default function Create() {
 
   return (
     <>
+      <h1>{userInfo}</h1>
       <form onSubmit={handleSubmit}>
         <input
-          type="file"
-          placeholder="Upload Image"
-          onChange={(e) => setImage(e.target.files)}
-        />
-        <input
           type="title"
-          placeholder="Joke Name"
+          placeholder="Joke title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <ReactQuill
+         <input
+          type="text"
+          placeholder="Joke Name"
           value={content}
-          onChange={(value) => setContent(value)}
-          theme="snow"
-          placeholder="Write a Joke"
-          modules={{
-            toolbar: [
-              [{ header: [1, 2, false] }],
-              ["bold", "italic", "underline", "strike", "blockquote"],
-              [
-                { list: "ordered" },
-                { list: "bullet" },
-                { indent: "-1" },
-                { indent: "+1" },
-              ],
-              ["link"],[ "image"].false,
-              ["clean"],
-              
-            ],
-          }}
+          onChange={(e) => setContent(e.target.value)}
         />
+        
         <button className="create" type="submit">
           Submit
         </button>
@@ -82,3 +65,5 @@ export default function Create() {
     </>
   );
 }
+
+

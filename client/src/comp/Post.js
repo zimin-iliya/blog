@@ -1,5 +1,9 @@
 import { formatISO9075 } from "date-fns";
+import React, { useContext } from "react";
+import { UserContext } from "../comp/UserContext"
 export default function Post(joke) {
+  const { userInfo } = useContext(UserContext);
+  
   async function handleDelete() {
     try {
       console.log(joke.joke._id);
@@ -22,9 +26,12 @@ export default function Post(joke) {
   }
 
   return (
-    <div className="post">
-
-      <div className="postimage">
+    <div>
+      <p>{joke.joke.username}</p>
+      <p>{joke.joke._id}</p>
+      <p>{joke.joke.title}</p>
+      <p>{joke.joke.content}</p>
+      {/* <div className="postimage">
         <div className="card"></div>
       </div>
       <div className="postheader">
@@ -48,7 +55,7 @@ export default function Post(joke) {
           </time>
         </div>
       </div>
-      
+       */}
     </div>
   );
 }

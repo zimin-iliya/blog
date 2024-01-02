@@ -7,7 +7,7 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const { setUserInfo } = useContext(UserContext);
+  const { setUserInfo,UserInfo } = useContext(UserContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -20,6 +20,7 @@ export default function Login() {
       });
       if (response.ok) {
         response.json().then((data) => {
+          console.log("data", data);
           setUserInfo(data.username);
           setRedirect(true);
         });
