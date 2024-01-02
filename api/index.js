@@ -100,4 +100,16 @@ app.get("/logout", (req, res) => {
   res.clearCookie("token").json({ message: "You are logged out" });
 });
 
+app.delete("/jokes/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const jokeDoc = await Jokes.findByIdAndDelete(id);
+    res.json(jokeDoc);
+  } catch (err) {
+    console.log("error", err);
+    res.status(400).json({ message: err });
+  }
+});
+
 app.listen(4000, () => console.log("Server running on port 4000"));
+
