@@ -14,12 +14,12 @@ export default function Header() {
         credentials: "include",
       });
       setUserInfo(false);
-      console.log(userInfo);
       setRedirect(true);
     } catch (error) {
       console.error(error);
     }
   }
+
 
   useEffect(() => {
     fetchProfile();
@@ -41,6 +41,7 @@ export default function Header() {
     }
   }
   if (redirect) {
+
     return <Navigate to="/" />;
   }
 
@@ -51,14 +52,11 @@ export default function Header() {
           Home
         </Link>
         <nav>
-          {userInfo ? (
+          {userInfo.length ? (
             <>
               <Link to="/create">Add a joke</Link>
               <Link to="/profile">{userInfo}</Link>
               <Link to="/login" onClick={Logout}>Logout</Link>
-              {/* <a href="#" onClick={Logout}>
-                Logout{" "}
-              </a> */}
             </>
           ) : (
             <>

@@ -5,18 +5,28 @@ export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-async function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    const regButton = document.querySelector(".register");
     try {
-        await fetch("http://localhost:4000/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password, email }),
+      const response = await fetch("http://localhost:4000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password, email }),
+      });
+      if (response.ok) {
+        regButton.style.backgroundColor = "green";
+        regButton.innerHTML = "Registered";
+        await new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+          window.location.replace("/login");
         });
+      } else {
+        console.log("error");
+      }
     } catch (error) {
-        console.error(error);
+      console.error(error);
     }
-}
+  }
   return (
     <>
       <form className="register" onSubmit={handleSubmit}>
@@ -42,7 +52,9 @@ async function handleSubmit(e) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button type="submit">Register</button>
+        <button className="register" type="submit">
+          Register
+        </button>
       </form>
     </>
   );

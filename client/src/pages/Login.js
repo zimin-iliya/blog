@@ -26,6 +26,7 @@ export default function Login() {
         });
       } else {
         console.log("error");
+        alert("Wrong username or password");
       }
     } catch (error) {
       console.error(error);

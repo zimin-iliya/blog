@@ -1,9 +1,9 @@
 import { formatISO9075 } from "date-fns";
 import React, { useContext } from "react";
-import { UserContext } from "../comp/UserContext"
+import { UserContext } from "../comp/UserContext";
 export default function Post(joke) {
   const { userInfo } = useContext(UserContext);
-  
+
   async function handleDelete() {
     try {
       console.log(joke.joke._id);
@@ -26,28 +26,18 @@ export default function Post(joke) {
   }
 
   return (
-    <div>
-      <p>{joke.joke.username}</p>
-      <p>{joke.joke._id}</p>
-      <p>{joke.joke.title}</p>
-      <p>{joke.joke.content}</p>
-      {/* <div className="postimage">
-        <div className="card"></div>
-      </div>
-      <div className="postheader">
-        <div
-          className="content"
-          dangerouslySetInnerHTML={{ __html: joke.joke.content }}
-        />
-      </div>
-      <div className="postbody">
+    <div className="postbody">
+      <div className="postimage">
+        <div className="card">
+          <h2>{joke.joke.title}</h2>
+          <p>{joke.joke.content}</p>
+        </div>
         <div className="postauthor">
           <p>by {joke.joke.username}</p>
-          <button className="postbutton">Read More</button>
-        <button className="postbutton">Edit</button>
-        <button onClick={handleDelete} className="postbutton">
-          Delete
-        </button>
+          <button className="postbutton">Edit</button>
+          <button onClick={handleDelete} className="postbutton">
+            Delete
+          </button>
           <time>
             {formatISO9075(new Date(joke.joke.createdAt), {
               representation: "date",
@@ -55,7 +45,13 @@ export default function Post(joke) {
           </time>
         </div>
       </div>
-       */}
+      {/* <div className="postheader">
+        <div />
+        <h2>{joke.joke.title}</h2>
+      </div>
+      <div>
+        <p>{joke.joke.content}</p>
+      </div> */}
     </div>
   );
 }

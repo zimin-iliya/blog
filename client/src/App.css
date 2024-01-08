@@ -49,15 +49,15 @@ header nav {
   height: 100%;
   margin-top: -300px;
 }
-.postextra {
-  display: flex;
-  height: 60%;
-  width: 60%;
-  color: #000000;
-  z-index: 1;
-}
+
 .postbody {
-  margin-top: 200px;
+  display: flex;
+  
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: center;
+	align-content: stretch;
 }
 
 div.post div.postimage {
@@ -70,8 +70,8 @@ div.post div.postimage {
 
 .postauthor {
   display: flex;
+  gap: 10px;
   justify-content: space-between;
-  margin-top: 20px;
 }
 
 form.login {
@@ -80,15 +80,54 @@ form.login {
   gap: 10px;
   margin-top: 20px;
 }
-.create {
+
+.createjokebtn  {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
   color: #fff;
   gap: 10px;
   margin-top: 20px;
 }
+.createjokebtn:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  color: #222;
+}
+.submitbtn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  gap: 10px;
+  margin-top: 20px;
+}
+.submitbtn:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  color: #222;
+}
+.createbox {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 100%;
+}
+.joketext {
+  width: 400px;
+  height: 100px;
+  border-radius: 5px;
+
+  gap: 10px;
+  margin-top: 20px;
+}
+
+
 
 form.register {
   display: flex;
@@ -104,13 +143,29 @@ button {
   background-color: #D93B81;
   color: #fff;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+button.postbutton {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #D93B81;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.card {
+  width: 100%;
+  height: 200px;
+  margin: 0 auto;
+  background-color: rgb(180, 157, 157);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-form h1 {
-  font-size: 1.5em;
-  text-align: center;
-  font-weight: bold;
-}
 .content {
   display: flex;
   flex-direction: column;
@@ -119,12 +174,7 @@ form h1 {
   color: #000000;
   z-index: 1;
 }
-.card {
-  width: 100%;
-  height: 500px;
-  margin: 0 auto;
-  background-color: rgb(180, 157, 157);
-}
+
 
 .card:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
