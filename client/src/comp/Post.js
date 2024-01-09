@@ -1,12 +1,24 @@
 import { formatISO9075 } from "date-fns";
 import React, { useContext } from "react";
 import { UserContext } from "../comp/UserContext";
+import picture from "../IMG/logoface.png";
+
+
+
+
+
 export default function Post(joke) {
+
+
+
+  
   const { userInfo } = useContext(UserContext);
+
+
+
 
   async function handleDelete() {
     try {
-      console.log(joke.joke._id);
       const response = await fetch(
         `http://localhost:4000/jokes/${joke.joke._id}`,
         {
@@ -29,6 +41,7 @@ export default function Post(joke) {
     <div className="postbody">
       <div className="postimage">
         <div className="card">
+          <img className="logo-face" src={picture} alt="joke" />
           <h2>{joke.joke.title}</h2>
           <p>{joke.joke.content}</p>
         </div>
