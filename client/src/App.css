@@ -14,11 +14,15 @@ main {
 }
 header {
   display: flex;
+  min-width: 0;
   justify-content: space-between;
   margin-bottom: 50px;
 }
 .logo-face{
   display: flex;
+  min-width: 0;
+  margin-left: 20px;
+  margin-right: 20px;
   justify-content: space-between;
   border-radius: 50%;
   width: 100px;
@@ -47,12 +51,14 @@ header nav {
 }
 .social {
   display: flex;
+  min-width: 0;
   justify-content: space-between;
   margin: 20px;
   gap: 10px;
 }
 .postheader {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -62,6 +68,7 @@ header nav {
 
 .postbody {
   display: flex;
+  min-width: 0;
   flex-direction: column;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -72,20 +79,22 @@ header nav {
 
 div.post div.postimage {
   display: flex;
+  min-width: 0;
   justify-content: center;
-  width: 95%;
-  height: 95%;
   margin: 0 auto;
 }
 
 .postauthor {
   display: flex;
+  min-width: 0;
   gap: 10px;
+  margin-bottom: 20px;
   justify-content: space-between;
 }
 
 form.login {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 10px;
   margin-top: 20px;
@@ -93,6 +102,7 @@ form.login {
 
 .createjokebtn  {
   display: flex;
+  min-width: 0;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -107,6 +117,7 @@ form.login {
 }
 .submitbtn{
   display: flex;
+  min-width: 0;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -141,6 +152,7 @@ form.login {
 
 form.register {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 10px;
   margin-top: 20px;
@@ -163,20 +175,59 @@ button.postbutton {
   background-color: #D93B81;
   color: #fff;
   cursor: pointer;
-  margin-top: 20px;
 }
 .card {
   width: 500px;
-  height: 200px;  
-  margin: 0 auto;
-  background-color: rgb(180, 157, 157);
-  display: flex;
+  height: auto;
+  margin-bottom: 20px;
+  background-color: rgb(240, 230, 230);
+  display: block;
+  min-width: 0;
   justify-content: center;
   align-items: center;
+
+}
+.card-header{
+  width: 500px;
+  height: 150px;  
+  margin: 0 auto;
+  display: flex;
+  line-break: anywhere;
+  justify-content: center;
+  align-items: center;
+  gap : 10px;
+}
+.joke-text {
+  display: flex;
+  min-width: 0;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin : 20px;
+}
+
+.author-right {
+  display: flex;
+  min-width: 0;
+  flex-direction:row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-left: 20px;
+}
+.author-left {
+  display: flex;
+  min-width: 0;
+  flex-direction:row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-right: 20px;
 }
 
 .content {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   height: 80%;
   width: 80%;
@@ -189,4 +240,12 @@ button.postbutton {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   color: #222;
   background-color: antiquewhite;
+}
+time {
+  font-size: 0.8em;
+  color: #999;
+  display: flex;
+  min-width: 0;
+  justify-content: center;
+  align-items: center;
 }

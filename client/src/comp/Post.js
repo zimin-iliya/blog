@@ -3,19 +3,13 @@ import React, { useContext } from "react";
 import { UserContext } from "../comp/UserContext";
 import picture from "../IMG/logoface.png";
 
-
-
-
-
 export default function Post(joke) {
-
-
-
-  
   const { userInfo } = useContext(UserContext);
 
-
-
+  function handleEdit() {
+    window.location.href = `/edit/${joke.joke._id}`;
+    
+  }
 
   async function handleDelete() {
     try {
@@ -39,32 +33,35 @@ export default function Post(joke) {
 
   return (
     <div className="postbody">
-      <div className="postimage">
-        <div className="card">
-          <img className="logo-face" src={picture} alt="joke" />
-          <h2>{joke.joke.title}</h2>
-          <p>{joke.joke.content}</p>
+      <div className="card">
+        <div className="card-header">
+          <div className="postimage">
+            <img className="logo-face" src={picture} alt="joke" />
+          </div>
+          {/* <h2>{joke.joke.title}</h2> */}
+          <div className="joke-text">
+            <p>{joke.joke.content}</p>
+          </div>
         </div>
         <div className="postauthor">
-          <p>by {joke.joke.username}</p>
-          <button className="postbutton">Edit</button>
-          <button onClick={handleDelete} className="postbutton">
-            Delete
-          </button>
-          <time>
-            {formatISO9075(new Date(joke.joke.createdAt), {
-              representation: "date",
-            })}
-          </time>
+          <div className="author-right">
+            <strong>by {joke.joke.username}</strong>
+            <time>
+              {formatISO9075(new Date(joke.joke.createdAt), {
+                representation: "date",
+              })}
+            </time>
+          </div>
+          <div className="author-left">
+            <button onClick={handleEdit} className="postbutton">
+              Edit
+            </button>
+            <button onClick={handleDelete} className="postbutton">
+              Delete
+            </button>
+          </div>
         </div>
       </div>
-      {/* <div className="postheader">
-        <div />
-        <h2>{joke.joke.title}</h2>
-      </div>
-      <div>
-        <p>{joke.joke.content}</p>
-      </div> */}
     </div>
   );
 }
