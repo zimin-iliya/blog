@@ -17,6 +17,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/create" element={<Create />} />
+        <Route path="/edit/:id" element={<Create />} />
       </Route>
     </Routes>
     </UserContextProvider>

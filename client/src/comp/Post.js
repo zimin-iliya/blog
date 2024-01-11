@@ -8,7 +8,6 @@ export default function Post(joke) {
 
   function handleEdit() {
     window.location.href = `/edit/${joke.joke._id}`;
-    
   }
 
   async function handleDelete() {

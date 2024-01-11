@@ -43,6 +43,7 @@ app.post("/register", async (req, res) => {
     res.status(400).json({ message: err });
   }
 });
+
 app.get("/jokes", async (req, res) => {
   try {
     const jokeDoc = await Jokes.find();
@@ -77,9 +78,6 @@ app.post("/login", async (req, res) => {
 app.post("/create",upload.none(), async (req, res) => {
   const { title, content, username } = req.body;
   console.log("this is req.body",JSON.stringify(req.body));
-  // console.log("this is req.body"+req.body.title);
-  // console.log("this is req.body"+req.body.content);
-
   try {
     const jokeDoc = await Jokes.create({
       title,
@@ -120,5 +118,31 @@ app.delete("/jokes/:id", async (req, res) => {
     res.status(400).json({ message: err });
   }
 });
+
+app.get("/jokes/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log("this is id", id);
+  try {
+    const jokeDoc = await Jokes.findById(id);
+    res.json(jokeDoc);
+  } catch (err) {
+    console.log("error", err);
+    res.status(400).json({ message: err });
+  }
+});
+
+app.put("/jokes/:id", async (req, res) => {
+  const { id } = req.params;
+  const { content } = req.body;
+  console.log("this is id", id,content);
+  try {
+    const jokeDoc = await Jokes.findByIdAndUpdate(id,{content});
+    res.json(jokeDoc);
+  } catch (err) {
+    console.log("error", err);
+    res.status(400).json({ message: err });
+  }
+}
+);
 
 app.listen(4000, () => console.log("Server running on port 4000"));
