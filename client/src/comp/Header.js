@@ -7,6 +7,7 @@ import { useState } from "react";
 export default function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
   const [redirect, setRedirect] = useState(false);
+  const [search, setSearch] = useState("");
 
   async function Logout() {
     try {
@@ -20,10 +21,9 @@ export default function Header() {
     }
   }
 
-
   useEffect(() => {
     fetchProfile();
-  }, );
+  });
 
   async function fetchProfile() {
     try {
@@ -41,31 +41,41 @@ export default function Header() {
     }
   }
   if (redirect) {
-
     return <Navigate to="/" />;
   }
 
   return (
     <>
-      <header>
-        <Link to="/" className="logo">
-          Home
-        </Link>
-        <nav>
-          {userInfo.length ? (
-            <>
-              <Link to="/create">Add a joke</Link>
-              <Link to="/profile">{userInfo}</Link>
-              <Link to="/login" onClick={Logout}>Logout</Link>
-            </>
-          ) : (
-            <>
-              <Link to="/login">Login</Link>
-              <Link to="/register">Register</Link>
-            </>
-          )}
-        </nav>
-      </header>
+      <div className="header">
+        <header>
+          <div className="header-right">
+            <Link to="/" className="header-link">
+              Home
+            </Link>
+            <div className="search-container">
+            <input type="text" value={search} onChange={(e)=> {setSearch(e.target.value)}}  className="find" />
+            <button className="search">Search</button>
+            </div>
+          </div>
+
+          <nav>
+            {userInfo.length ? (
+              <>
+                <Link to="/create">Add a joke</Link>
+                <Link to="/profile">{userInfo}</Link>
+                <Link to="/login" onClick={Logout}>
+                  Logout
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/login">Login</Link>
+                <Link to="/register">Register</Link>
+              </>
+            )}
+          </nav>
+        </header>
+      </div>
     </>
   );
 }

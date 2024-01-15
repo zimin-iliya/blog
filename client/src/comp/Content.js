@@ -46,7 +46,6 @@ export default function Content() {
 
   return (
     <>
-      <img src={img} alt="avatar" />
       {jokes.map((joke) => (
         <Post key={joke._id} joke={joke} />
       ))}

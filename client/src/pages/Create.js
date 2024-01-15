@@ -12,7 +12,6 @@ export default function Create(_id) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const namebutton = document.querySelector(".submitbtn");
 
   console.log(title, "content", content, userInfo);
 

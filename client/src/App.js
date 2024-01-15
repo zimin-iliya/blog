@@ -5,6 +5,7 @@ import Content from "./comp/Content";
 import Login from "./pages/Login";
 import Create from "./pages/Create";
 import Register from "./pages/Register";
+import Profile from "./pages/Profile";
 import { UserContextProvider } from "./comp/UserContext";
 function App() {
   
@@ -18,6 +19,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/create" element={<Create />} />
         <Route path="/edit/:id" element={<Create />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
     </Routes>
     </UserContextProvider>

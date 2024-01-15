@@ -52,10 +52,26 @@ export default function Post(joke) {
             </time>
           </div>
           <div className="author-left">
-            <button onClick={handleEdit} className="postbutton">
+            <button
+              disabled={userInfo !== joke.joke.username}
+              onClick={handleEdit}
+              className={
+                userInfo !== joke.joke.username
+                  ? "postbuttondsbl"
+                  : "postbutton"
+              }
+            >
               Edit
             </button>
-            <button onClick={handleDelete} className="postbutton">
+            <button
+              disabled={userInfo !== joke.joke.username}
+              onClick={handleDelete}
+              className={
+                userInfo !== joke.joke.username
+                  ? "postbuttondsbl"
+                  : "postbutton"
+              }
+            >
               Delete
             </button>
           </div>

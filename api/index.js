@@ -17,7 +17,6 @@ const password = process.env.PASSWORD;
 const salt = bcrypt.genSaltSync(10);
 const secret = "secret";
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -75,9 +74,9 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/create",upload.none(), async (req, res) => {
+app.post("/create", upload.none(), async (req, res) => {
   const { title, content, username } = req.body;
-  console.log("this is req.body",JSON.stringify(req.body));
+  console.log("this is req.body", JSON.stringify(req.body));
   try {
     const jokeDoc = await Jokes.create({
       title,
@@ -131,18 +130,29 @@ app.get("/jokes/:id", async (req, res) => {
   }
 });
 
-app.put("/jokes/:id", async (req, res) => {
-  const { id } = req.params;
-  const { content } = req.body;
-  console.log("this is id", id,content);
+app.get("/user/:username", async (req, res) => {
+  const { username } = req.params;
+  console.log("this is username", username);
   try {
-    const jokeDoc = await Jokes.findByIdAndUpdate(id,{content});
+    const jokeDoc = await Jokes.find({ username: username });
     res.json(jokeDoc);
   } catch (err) {
     console.log("error", err);
     res.status(400).json({ message: err });
   }
-}
-);
+});
+
+app.put("/jokes/:id", async (req, res) => {
+  const { id } = req.params;
+  const { content } = req.body;
+  console.log("this is id", id, content);
+  try {
+    const jokeDoc = await Jokes.findByIdAndUpdate(id, { content });
+    res.json(jokeDoc);
+  } catch (err) {
+    console.log("error", err);
+    res.status(400).json({ message: err });
+  }
+});
 
 app.listen(4000, () => console.log("Server running on port 4000"));
