@@ -7,7 +7,6 @@ import { useState } from "react";
 export default function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
   const [redirect, setRedirect] = useState(false);
-  const [search, setSearch] = useState("");
 
   async function Logout() {
     try {
@@ -52,10 +51,7 @@ export default function Header() {
             <Link to="/" className="header-link">
               Home
             </Link>
-            <div className="search-container">
-            <input type="text" value={search} onChange={(e)=> {setSearch(e.target.value)}}  className="find" />
-            <button className="search">Search</button>
-            </div>
+            
           </div>
 
           <nav>
