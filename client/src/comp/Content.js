@@ -34,13 +34,16 @@ export default function Content() {
   }, []);
 
   useEffect(() => {
-    
+    let sortedJokes = [...filtredjokes]
     setfiltredjokes(
-      jokes.filter(
+      sortedJokes.filter(
         (joke) =>
           joke.content.toLowerCase().includes(search.toLowerCase()) && joke
       )
     );
+    if (search.length < 1) {
+      setfiltredjokes(jokes);
+    }
   }, [search, jokes]);
 
   // const supabaseUrl = "https://ewokwacjsoqeghdxcwrt.supabase.co";

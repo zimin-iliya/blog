@@ -23,6 +23,7 @@ export default function Create(_id) {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       })
         .then((res) => res.json())
         .then((data) => {
@@ -66,6 +67,7 @@ export default function Create(_id) {
         body: JSON.stringify({
           content,
         }),
+        credentials: "include",
       });
       if (response.ok) {
         console.log("update joke works");
@@ -93,6 +95,7 @@ export default function Create(_id) {
         const response = await fetch("http://localhost:4000/create", {
           method: "POST",
           body: data,
+          credentials: "include",
         });
         if (response.ok) {
           namebutton.style.backgroundColor = "green";

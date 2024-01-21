@@ -51,7 +51,6 @@ export default function Header() {
             <Link to="/" className="header-link">
               Home
             </Link>
-            
           </div>
 
           <nav>

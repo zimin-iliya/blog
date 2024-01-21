@@ -11,6 +11,7 @@ const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 require("dotenv").config();
 const bodyParser = require("body-parser");
+const auth = require("./middleware/usersMiddleware");
 
 const password = process.env.PASSWORD;
 
@@ -43,7 +44,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.get("/jokes", async (req, res) => {
+app.get("/jokes",auth, async (req, res) => {
   try {
     const jokeDoc = await Jokes.find();
     res.json(jokeDoc);
@@ -74,7 +75,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/create", upload.none(), async (req, res) => {
+app.post("/create",auth, upload.none(), async (req, res) => {
   const { title, content, username } = req.body;
   console.log("this is req.body", JSON.stringify(req.body));
   try {
@@ -92,7 +93,7 @@ app.post("/create", upload.none(), async (req, res) => {
   }
 });
 
-app.get("/profile", (req, res) => {
+app.get("/profile",auth, (req, res) => {
   const token = req.cookies.token;
   jwt.verify(token, secret, (err, info) => {
     if (err) {
@@ -107,7 +108,7 @@ app.get("/logout", (req, res) => {
   res.clearCookie("token").json({ message: "You are logged out" });
 });
 
-app.delete("/jokes/:id", async (req, res) => {
+app.delete("/jokes/:id",auth, async (req, res) => {
   const { id } = req.params;
   try {
     const jokeDoc = await Jokes.findByIdAndDelete(id);
@@ -118,7 +119,7 @@ app.delete("/jokes/:id", async (req, res) => {
   }
 });
 
-app.get("/jokes/:id", async (req, res) => {
+app.get("/jokes/:id",auth, async (req, res) => {
   const { id } = req.params;
   console.log("this is id", id);
   try {
@@ -130,7 +131,7 @@ app.get("/jokes/:id", async (req, res) => {
   }
 });
 
-app.get("/user/:username", async (req, res) => {
+app.get("/user/:username",auth, async (req, res) => {
   const { username } = req.params;
   console.log("this is username", username);
   try {
@@ -142,7 +143,7 @@ app.get("/user/:username", async (req, res) => {
   }
 });
 
-app.put("/jokes/:id", async (req, res) => {
+app.put("/jokes/:id",auth, async (req, res) => {
   const { id } = req.params;
   const { content } = req.body;
   console.log("this is id", id, content);
