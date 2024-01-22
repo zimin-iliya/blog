@@ -9,11 +9,10 @@ export default function Create(_id) {
   const { userInfo } = useContext(UserContext);
   // const [image, setImage] = useState("");
   const [joke, setJoke] = useState("");
-  const [title, setTitle] = useState("");
+  // const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [redirect, setRedirect] = useState(false);
 
-  console.log(title, "content", content, userInfo);
 
   useEffect(() => {
     if (id) {

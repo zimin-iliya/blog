@@ -37,7 +37,6 @@ export default function Post(joke) {
           <div className="postimage">
             <img className="logo-face" src={picture} alt="joke" />
           </div>
-          {/* <h2>{joke.joke.title}</h2> */}
           <div className="joke-text">
             <p>{joke.joke.content}</p>
           </div>
@@ -53,6 +52,10 @@ export default function Post(joke) {
           </div>
           <div className="author-left">
             <button
+              style={{
+                display:
+                  userInfo !== joke.joke.username ? "none" : "inline-block",
+              }}
               disabled={userInfo !== joke.joke.username}
               onClick={handleEdit}
               className={
@@ -64,6 +67,10 @@ export default function Post(joke) {
               Edit
             </button>
             <button
+              style={{
+                display:
+                  userInfo !== joke.joke.username ? "none" : "inline-block",
+              }}
               disabled={userInfo !== joke.joke.username}
               onClick={handleDelete}
               className={

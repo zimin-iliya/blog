@@ -3,19 +3,18 @@ import Post from "./Post";
 import { useEffect } from "react";
 import { useState } from "react";
 // import { createClient } from "@supabase/supabase-js";
-// import { set } from "date-fns";
-// import { fi } from "date-fns/locale";
+import supabase from "../IMG/supabaseClient";
+
 
 export default function Content() {
   const [jokes, setJokes] = useState([]);
   const [filtredjokes, setfiltredjokes] = useState([]);
-  // const [img, setImg] = useState([]);
+  const [img, setImg] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     let sortedJokes = [...filtredjokes]
-    
   if (selectedCategory === "newest") {
     sortedJokes = sortedJokes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   } else if (selectedCategory === "oldest") {
@@ -30,7 +29,7 @@ export default function Content() {
 
   useEffect(() => {
     fetchJokes();
-    // showImg();
+    showImg();
   }, []);
 
   useEffect(() => {
@@ -50,14 +49,10 @@ export default function Content() {
   // const supabaseKey = process.env.REACT_APP_SUPABASE_KEY;
   // const supabase = createClient(supabaseUrl, supabaseKey);
 
-  // async function showImg() {
-  //   const { data, error } = await supabase.storage.getBucket("avatar");
-  //   console.log(error);
-  //   if (error) {
-  //   } else {
-  //     setImg(data);
-  //   }
-  // }
+  async function showImg() {
+    const publicUrl = supabase.storage.from('avatar/admin').getPublicUrl('ME2.jpg')
+    setImg(publicUrl.data.publicUrl)
+  }
 
   async function fetchJokes() {
     try {
@@ -79,6 +74,10 @@ export default function Content() {
 
   return (
     <>
+
+      <img  src={img} alt="joke" />
+
+
       <div className="search-container">
         <input
           type="text"
