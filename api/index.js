@@ -1,17 +1,21 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
-const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-const User = require("./models/User");
-const Jokes = require("./models/Jokes");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
-require("dotenv").config();
 const bodyParser = require("body-parser");
+
+const User = require("./models/User");
+const Jokes = require("./models/Jokes");
 const auth = require("./middleware/usersMiddleware");
+
+require("dotenv").config();
+
+const app = express();
+
+const upload = multer({ dest: "uploads/" });
 
 const password = process.env.PASSWORD;
 
@@ -44,16 +48,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.get("/jokes", auth, async (req, res) => {
-  try {
-    const jokeDoc = await Jokes.find();
-    res.json(jokeDoc);
-  } catch (err) {
-    console.log("error", err);
-    res.status(400).json({ message: err });
-  }
-});
-
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const userDoc = await User.findOne({ username });
@@ -75,17 +69,13 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/create", auth, upload.none(), async (req, res) => {
-  const { title, content, username } = req.body;
-  console.log("this is req.body", JSON.stringify(req.body));
+app.get("/logout", (req, res) => {
+  res.clearCookie("token").json({ message: "You are logged out" });
+});
+
+app.get("/jokes", auth, async (req, res) => {
   try {
-    const jokeDoc = await Jokes.create({
-      title,
-      content,
-      username,
-    });
-    console.log(req.body);
-    console.log(jokeDoc);
+    const jokeDoc = await Jokes.find();
     res.json(jokeDoc);
   } catch (err) {
     console.log("error", err);
@@ -104,8 +94,34 @@ app.get("/profile", auth, (req, res) => {
   });
 });
 
-app.get("/logout", (req, res) => {
-  res.clearCookie("token").json({ message: "You are logged out" });
+app.get("/jokes/me", auth, async (req, res) => {
+  const decodedToken = req.user.username;
+  console.log("this is decodedToken", decodedToken);
+  try {
+    const jokeDoc = await Jokes.find({ username: decodedToken });
+    res.json(jokeDoc);
+  } catch (err) {
+    console.log("error", err);
+    res.status(400).json({ message: err });
+  }
+});
+
+app.post("/create", auth, upload.none(), async (req, res) => {
+  const { title, content, username } = req.body;
+  console.log("this is req.body", JSON.stringify(req.body));
+  try {
+    const jokeDoc = await Jokes.create({
+      title,
+      content,
+      username,
+    });
+    console.log(req.body);
+    console.log(jokeDoc);
+    res.json(jokeDoc);
+  } catch (err) {
+    console.log("error", err);
+    res.status(400).json({ message: err });
+  }
 });
 
 app.delete("/jokes/:id", auth, async (req, res) => {
@@ -124,18 +140,6 @@ app.get("/jokes/:id", auth, async (req, res) => {
   console.log("this is id", id);
   try {
     const jokeDoc = await Jokes.findById(id);
-    res.json(jokeDoc);
-  } catch (err) {
-    console.log("error", err);
-    res.status(400).json({ message: err });
-  }
-});
-
-app.get("/user/:username", auth, async (req, res) => {
-  const { username } = req.params;
-  console.log("this is username", username);
-  try {
-    const jokeDoc = await Jokes.find({ username: username });
     res.json(jokeDoc);
   } catch (err) {
     console.log("error", err);

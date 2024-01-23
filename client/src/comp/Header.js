@@ -15,6 +15,7 @@ export default function Header() {
       });
       setUserInfo(false);
       setRedirect(true);
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }

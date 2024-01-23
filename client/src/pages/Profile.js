@@ -4,14 +4,26 @@ import picture from "../IMG/logoface.png";
 import { UserContext } from "../comp/UserContext";
 import { useContext } from "react";
 import { useState } from "react";
+import supabase from "../IMG/supabaseClient";
+import { useEffect } from "react";
 
 export default function Profile() {
   const [userJokes, setuserJokes] = useState([]);
   const { userInfo } = useContext(UserContext);
+  const [img, setImg] = useState([]);
+
+  useEffect(() => {
+    showImg();
+  }, []);
+
+  async function showImg() {
+    const publicUrl = supabase.storage.from(`avatar/${userInfo}`).getPublicUrl('ME2.jpg')
+    setImg(publicUrl.data.publicUrl)
+  }
   async function ShowUserJokes() {
     console.log(userInfo);
     try {
-      const response = await fetch(`http://localhost:4000/user/${userInfo}`, {
+      const response = await fetch(`http://localhost:4000/jokes/me`, {
         credentials: "include",
       });
       if (response.ok) {
@@ -33,7 +45,7 @@ export default function Profile() {
             <strong>Username: {userInfo}</strong>
           </div>
           <div className="profile-middle">
-          <img className="logo-face" src={picture} alt="joke" />
+          <img className="logo-face" src={img} alt="joke" />
           <p>
             Email: <br />
             <br />
@@ -42,6 +54,7 @@ export default function Profile() {
             </div>
           <div className="profile-bottom">
             <button onClick={ShowUserJokes}>show all my jokes</button>
+            <button>edit profile</button>
           </div>
         </div>
       </div>

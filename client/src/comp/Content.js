@@ -15,15 +15,26 @@ export default function Content() {
 
   useEffect(() => {
     let sortedJokes = [...filtredjokes]
-  if (selectedCategory === "newest") {
-    sortedJokes = sortedJokes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  } else if (selectedCategory === "oldest") {
-    sortedJokes = sortedJokes.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-  } else if (selectedCategory === "user") {
-    sortedJokes = sortedJokes.sort((a, b) => a.username.localeCompare(b.username));
-  } else if (selectedCategory === "all") {
-    sortedJokes = jokes;
-  }
+
+    // const sortTypes = {
+    //   'newest': (jo) => jo.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+    //   'oldest': (jo) => jo.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)),
+    //   'user': (jo) => jo.sort((a, b) => a.username.localeCompare(b.username)),
+    //   'all': ()=> [...jokes],
+    // }
+
+    // sortedJokes = sortTypes[selectedCategory](sortedJokes)
+
+
+    if (selectedCategory === "newest") {
+      sortedJokes = sortedJokes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    } else if (selectedCategory === "oldest") {
+      sortedJokes = sortedJokes.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    } else if (selectedCategory === "user") {
+      sortedJokes = sortedJokes.sort((a, b) => a.username.localeCompare(b.username));
+    } else if (selectedCategory === "all") {
+      sortedJokes = [...jokes];
+    }
   setfiltredjokes(sortedJokes);
   }, [selectedCategory, jokes]);
 
@@ -45,9 +56,6 @@ export default function Content() {
     }
   }, [search, jokes]);
 
-  // const supabaseUrl = "https://ewokwacjsoqeghdxcwrt.supabase.co";
-  // const supabaseKey = process.env.REACT_APP_SUPABASE_KEY;
-  // const supabase = createClient(supabaseUrl, supabaseKey);
 
   async function showImg() {
     const publicUrl = supabase.storage.from('avatar/admin').getPublicUrl('ME2.jpg')
@@ -75,7 +83,6 @@ export default function Content() {
   return (
     <>
 
-      <img  src={img} alt="joke" />
 
 
       <div className="search-container">
