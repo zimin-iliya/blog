@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const bodyParser = require("body-parser");
+const { createClient } = require("@supabase/supabase-js");
 
 const User = require("./models/User");
 const Jokes = require("./models/Jokes");
@@ -16,6 +17,10 @@ require("dotenv").config();
 const app = express();
 
 const upload = multer({ dest: "uploads/" });
+
+const supabaseUrl = "https://ewokwacjsoqeghdxcwrt.supabase.co";
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const password = process.env.PASSWORD;
 
@@ -77,6 +82,38 @@ app.get("/jokes", auth, async (req, res) => {
   try {
     const jokeDoc = await Jokes.find();
     res.json(jokeDoc);
+  } catch (err) {
+    console.log("error", err);
+    res.status(400).json({ message: err });
+  }
+});
+
+app.get("/avatar", auth, async (req, res) => {
+  const decodedToken = req.user.username;
+  console.log("this is decodedToken", decodedToken);
+  try {
+    const { data, error } = await supabase.storage
+      .from("avatar")
+      .list(decodedToken + "/", {
+        limit: 100,
+        offset: 0,
+        sortBy: { column: "name", order: "asc" },
+      });
+    console.log("this is data", data);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+    const avatarData = [];
+    await Promise.all(
+      data.map(async (item) => {
+        const avatarUrl = await supabase.storage
+          .from(`avatar/` + decodedToken)
+          .getPublicUrl(item.name);
+        avatarData.push(avatarUrl);
+      })
+    );
+    res.json(avatarData);
   } catch (err) {
     console.log("error", err);
     res.status(400).json({ message: err });

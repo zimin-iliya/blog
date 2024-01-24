@@ -2,8 +2,6 @@ import { set } from "date-fns";
 import Post from "./Post";
 import { useEffect } from "react";
 import { useState } from "react";
-// import { createClient } from "@supabase/supabase-js";
-import supabase from "../IMG/supabaseClient";
 
 
 export default function Content() {
@@ -40,7 +38,7 @@ export default function Content() {
 
   useEffect(() => {
     fetchJokes();
-    showImg();
+    fetchIMG();
   }, []);
 
   useEffect(() => {
@@ -57,9 +55,20 @@ export default function Content() {
   }, [search, jokes]);
 
 
-  async function showImg() {
-    const publicUrl = supabase.storage.from('avatar/admin').getPublicUrl('ME2.jpg')
-    setImg(publicUrl.data.publicUrl)
+  async function fetchImg() {
+    try {
+      const response = await fetch("http://localhost:4000/pictures", {
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setImg(data);
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function fetchJokes() {
@@ -69,9 +78,27 @@ export default function Content() {
       });
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         setJokes(data);
         setfiltredjokes(data);
         setSelectedCategory("all");
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function fetchIMG() {
+    try {
+      const response = await fetch(`http://localhost:4000/avatar`, {
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setImg(data);
       } else {
         console.log("error");
       }

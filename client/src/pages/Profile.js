@@ -1,25 +1,18 @@
 import React from "react";
 import Post from "../comp/Post";
-import picture from "../IMG/logoface.png";
 import { UserContext } from "../comp/UserContext";
 import { useContext } from "react";
 import { useState } from "react";
-import supabase from "../IMG/supabaseClient";
 import { useEffect } from "react";
 
 export default function Profile() {
   const [userJokes, setuserJokes] = useState([]);
   const { userInfo } = useContext(UserContext);
-  const [img, setImg] = useState([]);
+  // const [img, setImg] = useState([]);
 
-  useEffect(() => {
-    showImg();
-  }, []);
 
-  async function showImg() {
-    const publicUrl = supabase.storage.from(`avatar/${userInfo}`).getPublicUrl('ME2.jpg')
-    setImg(publicUrl.data.publicUrl)
-  }
+
+
   async function ShowUserJokes() {
     console.log(userInfo);
     try {
@@ -45,7 +38,7 @@ export default function Profile() {
             <strong>Username: {userInfo}</strong>
           </div>
           <div className="profile-middle">
-          <img className="logo-face" src={img} alt="joke" />
+          <img className="logo-face" src={''} alt="joke" />
           <p>
             Email: <br />
             <br />
