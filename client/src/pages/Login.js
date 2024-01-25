@@ -21,7 +21,7 @@ export default function Login() {
       if (response.ok) {
         response.json().then((data) => {
           console.log("data", data);
-          setUserInfo(data.username);
+          setUserInfo(data);
           setRedirect(true);
         });
       } else {

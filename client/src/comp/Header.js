@@ -5,8 +5,11 @@ import { Navigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function Header() {
-  const { setUserInfo, userInfo } = useContext(UserContext);
+  const { setUserInfo, userInfo,avatar, setAvatar } = useContext(UserContext);
   const [redirect, setRedirect] = useState(false);
+
+  console.log(avatar);
+  console.log(userInfo);
 
   async function Logout() {
     try {
@@ -23,7 +26,8 @@ export default function Header() {
 
   useEffect(() => {
     fetchProfile();
-  });
+    fetchImg();
+  }, []);
 
   async function fetchProfile() {
     try {
@@ -32,7 +36,7 @@ export default function Header() {
       });
       if (response.ok) {
         const data = await response.json();
-        setUserInfo(data.username);
+        setUserInfo(data);
       } else {
         console.log("error");
       }
@@ -43,6 +47,23 @@ export default function Header() {
   if (redirect) {
     return <Navigate to="/" />;
   }
+
+  async function fetchImg() {
+    try {
+      const response = await fetch("http://localhost:4000/avatars", {
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setAvatar(data);
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
 
   return (
     <>
@@ -55,10 +76,10 @@ export default function Header() {
           </div>
 
           <nav>
-            {userInfo.length ? (
+            {userInfo?.username ? (
               <>
                 <Link to="/create">Add a joke</Link>
-                <Link to="/profile">{userInfo}</Link>
+                <Link to="/profile">{userInfo.username}</Link>
                 <Link to="/login" onClick={Logout}>
                   Logout
                 </Link>

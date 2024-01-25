@@ -137,6 +137,32 @@ form.login {
   gap: 10px;
   margin-top: 20px;
 }
+.fileupload {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #D93B81;
+  color: #fff;
+  border: 2px dashed #fff;
+  padding: 10px;
+}
+
+.fileupload:hover {
+  border-color: #222;
+}
+
+.fileupload input[type="file"] {
+  display: none;
+}
+
+.fileupload label {
+  cursor: pointer;
+}
+
+.fileupload label:hover {
+  text-decoration: underline;
+}
 
 
 .createjokebtn  {
@@ -331,7 +357,7 @@ time {
 .profile-bottom {
   display: flex;
   min-width: 0;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   gap: 10px;

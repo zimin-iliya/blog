@@ -7,9 +7,10 @@ import { useState } from "react";
 export default function Content() {
   const [jokes, setJokes] = useState([]);
   const [filtredjokes, setfiltredjokes] = useState([]);
-  const [img, setImg] = useState([]);
+  const [Img, setImg] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+
 
   useEffect(() => {
     let sortedJokes = [...filtredjokes]
@@ -38,7 +39,6 @@ export default function Content() {
 
   useEffect(() => {
     fetchJokes();
-    fetchIMG();
   }, []);
 
   useEffect(() => {
@@ -55,22 +55,7 @@ export default function Content() {
   }, [search, jokes]);
 
 
-  async function fetchImg() {
-    try {
-      const response = await fetch("http://localhost:4000/pictures", {
-        credentials: "include",
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setImg(data);
-      } else {
-        console.log("error");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
+  
   async function fetchJokes() {
     try {
       const response = await fetch("http://localhost:4000/jokes", {
@@ -97,7 +82,6 @@ export default function Content() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setImg(data);
       } else {
         console.log("error");
@@ -137,7 +121,11 @@ export default function Content() {
       {filtredjokes.length || search.length > 2 ? (
         <>
           {filtredjokes.map((joke) => (
-            <Post key={joke._id} joke={joke} />
+            <Post key={joke._id} joke={joke}
+            //  picture={
+            //   joke.joke.username === Img.username
+            // } 
+            />
           ))}
         </>
       ) : (

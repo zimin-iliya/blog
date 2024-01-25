@@ -16,7 +16,7 @@ require("dotenv").config();
 
 const app = express();
 
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ storage: multer.memoryStorage() });
 
 const supabaseUrl = "https://ewokwacjsoqeghdxcwrt.supabase.co";
 const supabaseKey = process.env.SUPABASE_KEY;
@@ -88,18 +88,17 @@ app.get("/jokes", auth, async (req, res) => {
   }
 });
 
-app.get("/avatar", auth, async (req, res) => {
+app.get("/avatars", auth, async (req, res) => {
   const decodedToken = req.user.username;
+  const userId = req.user.userId;
   console.log("this is decodedToken", decodedToken);
+  console.log("this is userId", userId);
   try {
-    const { data, error } = await supabase.storage
-      .from("avatar")
-      .list(decodedToken + "/", {
-        limit: 100,
-        offset: 0,
-        sortBy: { column: "name", order: "asc" },
-      });
-    console.log("this is data", data);
+    const { data, error } = await supabase.storage.from("avatar").list("", {
+      limit: 100,
+      offset: 0,
+      sortBy: { column: "name", order: "asc" },
+    });
 
     if (error) {
       throw new Error(error.message);
@@ -108,7 +107,7 @@ app.get("/avatar", auth, async (req, res) => {
     await Promise.all(
       data.map(async (item) => {
         const avatarUrl = await supabase.storage
-          .from(`avatar/` + decodedToken)
+          .from(`/avatar`)
           .getPublicUrl(item.name);
         avatarData.push(avatarUrl);
       })
@@ -129,6 +128,28 @@ app.get("/profile", auth, (req, res) => {
       res.json(info);
     }
   });
+});
+
+
+app.post("/upload", auth, upload.single("image"), async (req, res) => {
+  const decodedToken = req.user.username;
+  const userId = req.user.userId;
+  try {
+    console.log("this is req.file", req.file);
+    const { data, error } = await supabase.storage
+      .from("avatar")
+      .upload(`${userId}.jpg`, req.file.buffer, {
+        cacheControl: "3600",
+        upsert: true,
+      });
+    if (error) {
+      throw new Error(error.message);
+    }
+    res.json(data);
+  } catch (err) {
+    console.log("error", err);
+    res.status(400).json({ message: err });
+  }
 });
 
 app.get("/jokes/me", auth, async (req, res) => {

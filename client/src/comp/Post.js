@@ -3,8 +3,9 @@ import React, { useContext } from "react";
 import { UserContext } from "../comp/UserContext";
 import picture from "../IMG/logoface.png";
 
-export default function Post(joke) {
+export default function Post(joke,picture) {
   const { userInfo } = useContext(UserContext);
+
 
   function handleEdit() {
     window.location.href = `/edit/${joke.joke._id}`;
@@ -35,7 +36,7 @@ export default function Post(joke) {
       <div className="card">
         <div className="card-header">
           <div className="postimage">
-            <img className="logo-face" src={picture} alt="joke" />
+            <img className="logo-face" src={''} alt="joke" />
           </div>
           <div className="joke-text">
             <p>{joke.joke.content}</p>
@@ -54,12 +55,12 @@ export default function Post(joke) {
             <button
               style={{
                 display:
-                  userInfo !== joke.joke.username ? "none" : "inline-block",
+                  userInfo.username !== joke.joke.username ? "none" : "inline-block",
               }}
-              disabled={userInfo !== joke.joke.username}
+              disabled={userInfo.username !== joke.joke.username}
               onClick={handleEdit}
               className={
-                userInfo !== joke.joke.username
+                userInfo.username !== joke.joke.username
                   ? "postbuttondsbl"
                   : "postbutton"
               }
@@ -69,12 +70,12 @@ export default function Post(joke) {
             <button
               style={{
                 display:
-                  userInfo !== joke.joke.username ? "none" : "inline-block",
+                userInfo.username !== joke.joke.username ? "none" : "inline-block",
               }}
-              disabled={userInfo !== joke.joke.username}
+              disabled={userInfo.username !== joke.joke.username}
               onClick={handleDelete}
               className={
-                userInfo !== joke.joke.username
+                userInfo.username !== joke.joke.username
                   ? "postbuttondsbl"
                   : "postbutton"
               }

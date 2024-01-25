@@ -10,9 +10,6 @@ export default function Profile() {
   const { userInfo } = useContext(UserContext);
   // const [img, setImg] = useState([]);
 
-
-
-
   async function ShowUserJokes() {
     console.log(userInfo);
     try {
@@ -30,24 +27,52 @@ export default function Profile() {
       console.error(error);
     }
   }
+
+  async function uploadImage(imageFile) {
+    console.log("Uploading image:", imageFile);
+    const formData = new FormData();
+    formData.append("image",imageFile );
+    try {
+      const response = await fetch("http://localhost:4000/upload", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        console.log("Image uploaded successfully");
+      } else {
+        console.log("Error uploading image");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="postbody">
       <div className="profile">
         <div className="postimage">
           <div className="profile-top">
-            <strong>Username: {userInfo}</strong>
+            <strong>Username: {userInfo.username}</strong>
           </div>
           <div className="profile-middle">
-          <img className="logo-face" src={''} alt="joke" />
-          <p>
-            Email: <br />
-            <br />
-            password: <br />
-          </p>
-            </div>
+            <img className="logo-face" src={""} alt="joke" />
+            <p>
+              Email: <br />
+              <br />
+              password: <br />
+            </p>
+          </div>
           <div className="profile-bottom">
-            <button onClick={ShowUserJokes}>show all my jokes</button>
-            <button>edit profile</button>
+            <input
+              className="fileupload"
+              type="file"
+              name="file"
+              accept="image/*"
+              onChange={(e) => uploadImage(e.target.files[0])}
+            />
+             <button onClick={ShowUserJokes}>show all my jokes</button>
           </div>
         </div>
       </div>

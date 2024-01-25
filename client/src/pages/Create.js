@@ -7,16 +7,12 @@ import { useParams } from "react-router-dom";
 export default function Create(_id) {
   const { id } = useParams();
   const { userInfo } = useContext(UserContext);
-  // const [image, setImage] = useState("");
   const [joke, setJoke] = useState("");
-  // const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [redirect, setRedirect] = useState(false);
 
-
   useEffect(() => {
     if (id) {
-      console.log("this is id", id);
       fetch(`http://localhost:4000/jokes/${id}`, {
         method: "GET",
         headers: {
@@ -26,7 +22,6 @@ export default function Create(_id) {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log("useEffect works", data);
           setContent(data.content);
         })
         .catch((error) => {
@@ -36,7 +31,7 @@ export default function Create(_id) {
   }, [id]);
 
   async function generateJoke() {
-    if (userInfo) {
+    if (userInfo.username) {
       try {
         const response = await fetch("https://icanhazdadjoke.com/", {
           headers: {
@@ -86,9 +81,8 @@ export default function Create(_id) {
       const data = new FormData();
       const namebutton = document.querySelector(".submitbtn");
 
-      // data.append("title", title);
       data.append("content", joke ? joke : content);
-      data.append("username", userInfo);
+      data.append("username", userInfo.username);
       try {
         e.preventDefault();
         const response = await fetch("http://localhost:4000/create", {
@@ -117,14 +111,8 @@ export default function Create(_id) {
   return (
     <>
       <div className="createbox">
-        <h1>{userInfo}</h1>
+        <h1>{userInfo.username}</h1>
         <form onSubmit={handleSubmit}>
-          {/* <input
-          type="title"
-          placeholder="Joke title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        /> */}
           <textarea
             className="joketext"
             type="text"
