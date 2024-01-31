@@ -3,12 +3,13 @@ import Post from "../comp/Post";
 import { UserContext } from "../comp/UserContext";
 import { useContext } from "react";
 import { useState } from "react";
-import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
+
 
 export default function Profile() {
   const [userJokes, setuserJokes] = useState([]);
-  const { userInfo } = useContext(UserContext);
-  // const [img, setImg] = useState([]);
+  const [redirect, setRedirect] = useState(false);
+  const { userInfo,avatar } = useContext(UserContext);
 
   async function ShowUserJokes() {
     console.log(userInfo);
@@ -41,12 +42,18 @@ export default function Profile() {
 
       if (response.ok) {
         console.log("Image uploaded successfully");
+        const data = await response.json();
+        console.log(data);
       } else {
         console.log("Error uploading image");
       }
     } catch (error) {
       console.error(error);
     }
+  }
+
+  if (redirect) {
+    return <Navigate to="/" />;
   }
 
   return (

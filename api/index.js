@@ -78,7 +78,7 @@ app.get("/logout", (req, res) => {
   res.clearCookie("token").json({ message: "You are logged out" });
 });
 
-app.get("/jokes", auth, async (req, res) => {
+app.get("/jokes", async (req, res) => {
   try {
     const jokeDoc = await Jokes.find();
     res.json(jokeDoc);
@@ -88,11 +88,20 @@ app.get("/jokes", auth, async (req, res) => {
   }
 });
 
-app.get("/avatars", auth, async (req, res) => {
-  const decodedToken = req.user.username;
-  const userId = req.user.userId;
-  console.log("this is decodedToken", decodedToken);
-  console.log("this is userId", userId);
+
+
+app.get("/profile", auth, (req, res) => {
+  const token = req.cookies.token;
+  jwt.verify(token, secret, (err, info) => {
+    if (err) {
+      res.status(401).json({ message: "You are not logged in" });
+    } else {
+      res.json(info);
+    }
+  });
+});
+
+app.get("/avatars", async (req, res) => {
   try {
     const { data, error } = await supabase.storage.from("avatar").list("", {
       limit: 100,
@@ -119,33 +128,27 @@ app.get("/avatars", auth, async (req, res) => {
   }
 });
 
-app.get("/profile", auth, (req, res) => {
-  const token = req.cookies.token;
-  jwt.verify(token, secret, (err, info) => {
-    if (err) {
-      res.status(401).json({ message: "You are not logged in" });
-    } else {
-      res.json(info);
-    }
-  });
-});
-
-
 app.post("/upload", auth, upload.single("image"), async (req, res) => {
-  const decodedToken = req.user.username;
-  const userId = req.user.userId;
   try {
-    console.log("this is req.file", req.file);
+    const userId = req.user.userId;
+    const username = (req.user.username).toLowerCase();
     const { data, error } = await supabase.storage
       .from("avatar")
       .upload(`${userId}.jpg`, req.file.buffer, {
-        cacheControl: "3600",
+        cacheControl: "600",
         upsert: true,
       });
     if (error) {
       throw new Error(error.message);
     }
     res.json(data);
+    updated = await User.findByIdAndUpdate(
+      userId,
+      {
+        avatar: `https://ewokwacjsoqeghdxcwrt.supabase.co/storage/v1/object/public/${data.fullPath}`,
+      },
+      { new: true }
+    );
   } catch (err) {
     console.log("error", err);
     res.status(400).json({ message: err });
@@ -166,12 +169,15 @@ app.get("/jokes/me", auth, async (req, res) => {
 
 app.post("/create", auth, upload.none(), async (req, res) => {
   const { title, content, username } = req.body;
-  console.log("this is req.body", JSON.stringify(req.body));
+  const userId = req.user.userId;
+
+  console.log("this is req.user", JSON.stringify(req.user));
   try {
     const jokeDoc = await Jokes.create({
       title,
       content,
       username,
+      userId,
     });
     console.log(req.body);
     console.log(jokeDoc);

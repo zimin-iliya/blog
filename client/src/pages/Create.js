@@ -11,6 +11,8 @@ export default function Create(_id) {
   const [content, setContent] = useState("");
   const [redirect, setRedirect] = useState(false);
 
+  console.log("this is userInfo", userInfo);
+
   useEffect(() => {
     if (id) {
       fetch(`http://localhost:4000/jokes/${id}`, {

@@ -1,11 +1,23 @@
 import { formatISO9075 } from "date-fns";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import { useState } from "react";
 import { UserContext } from "../comp/UserContext";
 import picture from "../IMG/logoface.png";
 
-export default function Post(joke,picture) {
-  const { userInfo } = useContext(UserContext);
+export default function Post(joke) {
+  const { userInfo, avatar } = useContext(UserContext);
+  const [imgIndex, setImgIndex] = useState('')
 
+  useEffect(() => {
+    if (avatar.length > 0) {
+      const targetValue = (joke.joke.userId)?.toLowerCase() + ".jpg";
+      const index = avatar.findIndex((item) =>
+        item.data.publicUrl.endsWith(targetValue)
+      );
+      console.log(index);
+      setImgIndex(index);
+    }
+  }, [avatar]);
 
   function handleEdit() {
     window.location.href = `/edit/${joke.joke._id}`;
@@ -36,7 +48,11 @@ export default function Post(joke,picture) {
       <div className="card">
         <div className="card-header">
           <div className="postimage">
-            <img className="logo-face" src={''} alt="joke" />
+            <img
+              className="logo-face"
+                src={`${avatar[imgIndex]?.data.publicUrl}`}
+                alt="joke"
+            />
           </div>
           <div className="joke-text">
             <p>{joke.joke.content}</p>
@@ -55,7 +71,9 @@ export default function Post(joke,picture) {
             <button
               style={{
                 display:
-                  userInfo.username !== joke.joke.username ? "none" : "inline-block",
+                  userInfo.username !== joke.joke.username
+                    ? "none"
+                    : "inline-block",
               }}
               disabled={userInfo.username !== joke.joke.username}
               onClick={handleEdit}
@@ -70,7 +88,9 @@ export default function Post(joke,picture) {
             <button
               style={{
                 display:
-                userInfo.username !== joke.joke.username ? "none" : "inline-block",
+                  userInfo.username !== joke.joke.username
+                    ? "none"
+                    : "inline-block",
               }}
               disabled={userInfo.username !== joke.joke.username}
               onClick={handleDelete}

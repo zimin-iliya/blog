@@ -3,7 +3,6 @@ import Post from "./Post";
 import { useEffect } from "react";
 import { useState } from "react";
 
-
 export default function Content() {
   const [jokes, setJokes] = useState([]);
   const [filtredjokes, setfiltredjokes] = useState([]);
@@ -11,10 +10,8 @@ export default function Content() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-
   useEffect(() => {
-    let sortedJokes = [...filtredjokes]
-
+    let sortedJokes = [...filtredjokes];
     // const sortTypes = {
     //   'newest': (jo) => jo.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
     //   'oldest': (jo) => jo.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)),
@@ -23,18 +20,22 @@ export default function Content() {
     // }
 
     // sortedJokes = sortTypes[selectedCategory](sortedJokes)
-
-
     if (selectedCategory === "newest") {
-      sortedJokes = sortedJokes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      sortedJokes = sortedJokes.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
     } else if (selectedCategory === "oldest") {
-      sortedJokes = sortedJokes.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      sortedJokes = sortedJokes.sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+      );
     } else if (selectedCategory === "user") {
-      sortedJokes = sortedJokes.sort((a, b) => a.username.localeCompare(b.username));
+      sortedJokes = sortedJokes.sort((a, b) =>
+        a.username.localeCompare(b.username)
+      );
     } else if (selectedCategory === "all") {
       sortedJokes = [...jokes];
     }
-  setfiltredjokes(sortedJokes);
+    setfiltredjokes(sortedJokes);
   }, [selectedCategory, jokes]);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export default function Content() {
   }, []);
 
   useEffect(() => {
-    let sortedJokes = [...filtredjokes]
+    let sortedJokes = [...filtredjokes];
     setfiltredjokes(
       sortedJokes.filter(
         (joke) =>
@@ -54,8 +55,6 @@ export default function Content() {
     }
   }, [search, jokes]);
 
-
-  
   async function fetchJokes() {
     try {
       const response = await fetch("http://localhost:4000/jokes", {
@@ -63,7 +62,6 @@ export default function Content() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setJokes(data);
         setfiltredjokes(data);
         setSelectedCategory("all");
@@ -75,27 +73,8 @@ export default function Content() {
     }
   }
 
-  async function fetchIMG() {
-    try {
-      const response = await fetch(`http://localhost:4000/avatar`, {
-        credentials: "include",
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setImg(data);
-      } else {
-        console.log("error");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   return (
     <>
-
-
-
       <div className="search-container">
         <input
           type="text"
@@ -121,10 +100,12 @@ export default function Content() {
       {filtredjokes.length || search.length > 2 ? (
         <>
           {filtredjokes.map((joke) => (
-            <Post key={joke._id} joke={joke}
-            //  picture={
-            //   joke.joke.username === Img.username
-            // } 
+            <Post
+              key={joke._id}
+              joke={joke}
+              //  picture={
+              //   joke.joke.username === Img.username
+              // }
             />
           ))}
         </>

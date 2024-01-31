@@ -8,8 +8,6 @@ export default function Header() {
   const { setUserInfo, userInfo,avatar, setAvatar } = useContext(UserContext);
   const [redirect, setRedirect] = useState(false);
 
-  console.log(avatar);
-  console.log(userInfo);
 
   async function Logout() {
     try {

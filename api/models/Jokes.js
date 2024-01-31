@@ -7,6 +7,7 @@ const JokesSchema = new mongoose.Schema(
     content: String,
     username: String,
     author: { type: Schema.Types.ObjectId, ref: "User" },
+    userId: String,
   },
   {
     timestamps: true,
