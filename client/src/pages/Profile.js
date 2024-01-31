@@ -43,7 +43,7 @@ export default function Profile() {
       if (response.ok) {
         console.log("Image uploaded successfully");
         const data = await response.json();
-        console.log(data);
+        setRedirect(true);
       } else {
         console.log("Error uploading image");
       }
